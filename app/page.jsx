@@ -5,6 +5,10 @@ import StatsCard from './components/StatsCard';
 import FilterBar from './components/FilterBar';
 import PaymentTable from './components/PaymentTable';
 import ReminderModal from './components/ReminderModal';
+import QuickActions from './components/QuickActions';
+import RecentActivities from './components/RecentActivities';
+import AddCustomerModal from './components/AddCustomerModal';
+import AddInvoiceModal from './components/AddInvoiceModal';
 
 // Sample payment data
 const samplePayments = [
@@ -111,6 +115,10 @@ export default function Home() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  
+  // Modal states for Quick Actions
+  const [isCustomerModalOpen, setCustomerModalOpen] = useState(false);
+  const [isInvoiceModalOpen, setInvoiceModalOpen] = useState(false);
 
   // Filter payments based on search and status
   const filteredPayments = useMemo(() => {
@@ -224,6 +232,15 @@ export default function Home() {
         />
       </div>
 
+      {/* Quick Actions & Recent Activities */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <QuickActions
+          onAddCustomer={() => setCustomerModalOpen(true)}
+          onAddInvoice={() => setInvoiceModalOpen(true)}
+        />
+        <RecentActivities />
+      </div>
+
       {/* Filter Bar */}
       <FilterBar
         searchQuery={searchQuery}
@@ -251,6 +268,16 @@ export default function Home() {
         isOpen={modalOpen}
         onClose={handleCloseModal}
         payment={selectedPayment}
+      />
+      
+      {/* Quick Action Modals */}
+      <AddCustomerModal 
+        isOpen={isCustomerModalOpen} 
+        onClose={() => setCustomerModalOpen(false)} 
+      />
+      <AddInvoiceModal 
+        isOpen={isInvoiceModalOpen} 
+        onClose={() => setInvoiceModalOpen(false)} 
       />
     </div>
   );

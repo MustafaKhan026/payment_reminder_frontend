@@ -65,17 +65,17 @@ export default function FilterBar({ searchQuery, setSearchQuery, statusFilter, s
 
         {/* Date Range */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Date Range
           </label>
           <div className="flex gap-2">
             <input
               type="date"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-[#2E3A47] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white dark:bg-[#1A222C] text-gray-900 dark:text-white transition-all"
             />
             <input
               type="date"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-[#2E3A47] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white dark:bg-[#1A222C] text-gray-900 dark:text-white transition-all"
             />
           </div>
         </div>
