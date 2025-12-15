@@ -28,13 +28,13 @@ export default function AddCustomerModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity backdrop-blur-sm"
+        className="fixed inset-0 bg-[#00000005] bg-opacity-50 transition-opacity backdrop-blur-sm"
         onClick={onClose}
       ></div>
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white dark:bg-[#24303F] rounded-2xl shadow-2xl max-w-md w-full transform transition-all border border-gray-100 dark:border-[#2E3A47]">
+        <div className="relative bg-[#000000] backdrop-blur-sm rounded-2xl shadow-2xl max-w-md w-full transform transition-all border border-white/20 dark:border-[#2E3A47]/50">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-[#2E3A47]">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -65,7 +65,7 @@ export default function AddCustomerModal({ isOpen, onClose }) {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="John Doe"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-[#2E3A47] rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-white dark:bg-[#1A222C] text-gray-900 dark:text-white transition-all"
+                  className="w-full pl-10 pr-4 py-2 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-black/50 text-white placeholder-gray-400 transition-all"
                   required
                 />
               </div>
@@ -86,7 +86,7 @@ export default function AddCustomerModal({ isOpen, onClose }) {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="john@example.com"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-[#2E3A47] rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-white dark:bg-[#1A222C] text-gray-900 dark:text-white transition-all"
+                  className="w-full pl-10 pr-4 py-2 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-black/50 text-white placeholder-gray-400 transition-all"
                   required
                 />
               </div>
@@ -107,7 +107,7 @@ export default function AddCustomerModal({ isOpen, onClose }) {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+91 98765 43210"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-[#2E3A47] rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-white dark:bg-[#1A222C] text-gray-900 dark:text-white transition-all"
+                  className="w-full pl-10 pr-4 py-2 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-black/50 text-white placeholder-gray-400 transition-all"
                   required
                 />
               </div>

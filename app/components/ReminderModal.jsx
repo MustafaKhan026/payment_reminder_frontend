@@ -33,7 +33,7 @@ export default function ReminderModal({ isOpen, onClose, payment }) {
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white dark:bg-[#24303F] rounded-2xl shadow-2xl max-w-2xl w-full transform transition-all">
+        <div className="relative bg-[#00000005] backdrop-blur-sm rounded-2xl shadow-2xl max-w-2xl w-full transform transition-all border border-white/20 dark:border-[#2E3A47]/50">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-[#2E3A47]">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Send Payment Reminder</h2>
@@ -98,7 +98,7 @@ export default function ReminderModal({ isOpen, onClose, payment }) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 rows="8"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-[#2E3A47] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none bg-white dark:bg-[#1A222C] text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-white/10 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none bg-black/50 text-white"
                 suppressHydrationWarning
               />
             </div>
