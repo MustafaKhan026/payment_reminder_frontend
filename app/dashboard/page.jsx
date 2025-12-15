@@ -13,6 +13,7 @@ import AddCustomerModal from '../components/AddCustomerModal';
 import AddInvoiceModal from '../components/AddInvoiceModal';
 import { getAllInvoicesAPI } from '../api/invoices';
 import { getUsersAPI } from '../api/users';
+import Preloader from '../components/Preloader';
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -128,7 +129,7 @@ export default function DashboardPage() {
   if (authLoading || (dataLoading && !invoices.length)) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <Preloader />
       </div>
     );
   }

@@ -34,21 +34,42 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      const token = data.token || data.access_token;
       
-      // Store user data
-      const userData = {
+      // Store token immediately to allow subsequent requests
+      if (token) {
+        localStorage.setItem('token', token);
+      }
+
+      // If user data is missing ID, fetch it from GET_USERS
+      let userData = {
         id: data.id,
         name: data.name || data.full_name || data.username || data.email?.split('@')[0],
         email: data.email,
       };
+
+      if (!userData.id && token) {
+        try {
+          // Fetch all users to find the current user's ID
+          const usersResponse = await import('../api/users').then(mod => mod.getUsersAPI(token));
+          if (usersResponse.ok) {
+            const users = await usersResponse.json();
+            const currentUser = users.find(u => u.email === email);
+            if (currentUser) {
+              userData = {
+                id: currentUser.id,
+                name: currentUser.name || userData.name,
+                email: currentUser.email,
+              };
+            }
+          }
+        } catch (fetchError) {
+          console.error("Failed to fetch user details:", fetchError);
+        }
+      }
       
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
-      
-      // Store token if provided
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-      }
       
       router.push('/dashboard');
       return { success: true };
