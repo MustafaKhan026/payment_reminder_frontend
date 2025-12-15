@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../components/AuthContext';
 import { getAllInvoicesAPI } from '../api/invoices';
+import Preloader from '../components/Preloader';
 
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState([]);
@@ -58,7 +59,7 @@ export default function InvoicesPage() {
       {/* Invoices List */}
       <div className="bg-white dark:bg-[#24303F] rounded-xl shadow-sm border border-gray-200 dark:border-[#2E3A47] overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">Loading invoices...</div>
+          <Preloader />
         ) : error ? (
           <div className="p-8 text-center text-red-500 dark:text-red-400">{error}</div>
         ) : invoices.length === 0 ? (

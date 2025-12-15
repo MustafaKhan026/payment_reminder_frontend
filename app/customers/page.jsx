@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { getUsersAPI } from '../api/users';
+import Preloader from '../components/Preloader';
 
 export default function CustomersPage() {
   const [users, setUsers] = useState([]);
@@ -40,7 +41,7 @@ export default function CustomersPage() {
       {/* Users List */}
       <div className="bg-white dark:bg-[#24303F] rounded-xl shadow-sm border border-gray-200 dark:border-[#2E3A47] overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">Loading customers...</div>
+          <Preloader />
         ) : error ? (
           <div className="p-8 text-center text-red-500 dark:text-red-400">{error}</div>
         ) : users.length === 0 ? (
