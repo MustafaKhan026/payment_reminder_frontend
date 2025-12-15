@@ -81,7 +81,7 @@ export default function InvoicesPage() {
                   <tr key={invoice.id} className="hover:bg-gray-50 dark:hover:bg-[#333A48]/50 transition-colors">
                     <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{invoice.invoice_number}</td>
                     <td className="px-6 py-4">{invoice.customer_name}</td>
-                    <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">${invoice.amount}</td>
+                    <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">₹{invoice.amount}</td>
                     <td className="px-6 py-4">{invoice.issue_date}</td>
                     <td className="px-6 py-4">{invoice.due_date}</td>
                     <td className="px-6 py-4">
