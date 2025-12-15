@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
       // Store user data
       const userData = {
         id: data.id,
-        name: data.name,
+        name: data.name || data.full_name || data.username || data.email?.split('@')[0],
         email: data.email,
       };
       
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
       // Store user data
       const userData = {
         id: data.id,
-        name: data.name,
+        name: data.name || name, // Fallback to input name if response doesn't have it
         email: data.email,
       };
       
