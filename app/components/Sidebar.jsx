@@ -18,6 +18,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </svg>
       ),
     },
+    /*
     {
       name: 'Reminders',
       path: '/reminders',
@@ -36,6 +37,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </svg>
       ),
     },
+    */
     {
       name: 'Customers',
       path: '/customers',
@@ -45,6 +47,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </svg>
       ),
     },
+    /*
     {
       name: 'Reports',
       path: '/reports',
@@ -54,6 +57,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </svg>
       ),
     },
+    */
     {
       name: 'Settings',
       path: '/settings',
