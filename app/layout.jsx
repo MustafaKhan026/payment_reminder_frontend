@@ -1,31 +1,21 @@
-'use client';
-
-import { useState } from 'react';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import LayoutClient from './components/LayoutClient';
 import { ThemeProvider } from './components/theme-provider';
+import { AuthProvider } from './components/AuthContext';
 import './globals.css';
 
-export default function RootLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export const metadata = {
+  title: 'PayRemind - Payment Reminder Dashboard',
+  description: 'Manage and track payment reminders efficiently',
+};
 
+export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>PayRemind - Payment Reminder Dashboard</title>
-        <meta name="description" content="Manage and track payment reminders efficiently" />
-      </head>
       <body className="bg-gray-100 dark:bg-[#1A222C] min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-          <div className="lg:ml-64">
-            <Navbar 
-              onMenuClick={() => setSidebarOpen(!sidebarOpen)} 
-            />
-            <main className="p-6">
-              {children}
-            </main>
-          </div>
+          <AuthProvider>
+            <LayoutClient>{children}</LayoutClient>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
