@@ -59,7 +59,7 @@ export default function PaymentTable({ payments, onSendReminder }) {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="font-semibold text-gray-900 dark:text-white">${payment.amount.toLocaleString()}</p>
+                    <p className="font-semibold text-gray-900 dark:text-white">₹{payment.amount.toLocaleString()}</p>
                   </td>
                   <td className="px-6 py-4">
                     <p className="text-gray-700 dark:text-gray-300">{payment.dueDate}</p>

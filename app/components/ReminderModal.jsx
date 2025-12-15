@@ -8,7 +8,7 @@ export default function ReminderModal({ isOpen, onClose, payment }) {
   useEffect(() => {
     if (payment) {
       setMessage(
-        `Dear ${payment.customerName},\n\nThis is a friendly reminder that your payment of $${payment.amount.toLocaleString()} is due on ${payment.dueDate}.\n\nPlease make the payment at your earliest convenience to avoid any late fees.\n\nThank you for your business!\n\nBest regards,\nPayRemind Team`
+        `Dear ${payment.customerName},\n\nThis is a friendly reminder that your payment of ₹${payment.amount.toLocaleString()} is due on ${payment.dueDate}.\n\nPlease make the payment at your earliest convenience to avoid any late fees.\n\nThank you for your business!\n\nBest regards,\nPayRemind Team`
       );
     }
   }, [payment]);
@@ -71,7 +71,7 @@ export default function ReminderModal({ isOpen, onClose, payment }) {
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-600 dark:text-gray-400">Amount Due</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">${payment.amount.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">₹{payment.amount.toLocaleString()}</p>
                 </div>
               </div>
             </div>

@@ -1,8 +1,19 @@
 'use client';
 
 import { ModeToggle } from './ModeToggle';
+import { useAuth } from './AuthContext';
 
 export default function Navbar({ onMenuClick }) {
+  const { user } = useAuth();
+
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    const names = name.split(' ');
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
 
   return (
     <nav className="sticky top-0 z-40 bg-white dark:bg-[#24303F] border-b border-gray-200 dark:border-[#2E3A47]">
@@ -32,22 +43,7 @@ export default function Navbar({ onMenuClick }) {
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            {/* <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-600/30">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div> */}
-            {/* <span className="text-xl font-bold text-gray-900 dark:text-white">PayRemind</span> */}
+            {/* Logo content preserved */}
           </div>
         </div>
 
@@ -99,15 +95,17 @@ export default function Navbar({ onMenuClick }) {
           </button>
 
           {/* Profile Avatar */}
-          <div className="flex items-center gap-3 pl-3 ml-3 border-l border-gray-200 dark:border-[#2E3A47]">
-            <div className="hidden md:block text-right">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white">John Doe</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Admin</p>
+          {user && (
+            <div className="flex items-center gap-3 pl-3 ml-3 border-l border-gray-200 dark:border-[#2E3A47]">
+              <div className="hidden md:block text-right">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{user.name || 'User'}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Admin</p>
+              </div>
+              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold cursor-pointer hover:shadow-lg transition-shadow">
+                {getInitials(user.name)}
+              </div>
             </div>
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold cursor-pointer hover:shadow-lg transition-shadow">
-              JD
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </nav>
