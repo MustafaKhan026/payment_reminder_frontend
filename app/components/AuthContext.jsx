@@ -36,38 +36,63 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       const token = data.token || data.access_token;
       
+      console.log('Login API Response:', data); // Debugging log
+
       // Store token immediately to allow subsequent requests
       if (token) {
         localStorage.setItem('token', token);
       }
 
       // If user data is missing ID, fetch it from GET_USERS
+      // CRITICAL FIX: Use 'email' argument from function scope as fallback, as API response might not return it.
+      // Also check for nested 'user' object which is common in API responses
       let userData = {
-        id: data.id,
-        name: data.name || data.full_name || data.username || data.email?.split('@')[0],
-        email: data.email,
+        id: data.id || data.user_id || data.userId || data.user?.id || data.user?.user_id || data.user?.userId || data.User?.id,
+        name: data.name || data.full_name || data.username || data.user?.name || data.user?.full_name || data.user?.username || data.email?.split('@')[0] || email.split('@')[0],
+        email: data.email || data.user?.email || email,
+        role: data.role || data.user?.role || 'User',
       };
 
       if (!userData.id && token) {
+        console.warn('Login: User ID missing in login response, attempting to fetch from users list...');
         try {
           // Fetch all users to find the current user's ID
-          const usersResponse = await import('../api/users').then(mod => mod.getUsersAPI(token));
+          // Dynamically import to avoid circular dependency if any
+          const { getUsersAPI } = await import('../api/users');
+          const usersResponse = await getUsersAPI(token);
+          
           if (usersResponse.ok) {
             const users = await usersResponse.json();
-            const currentUser = users.find(u => u.email === email);
+            console.log('Login: Fetched users list:', users.length);
+            
+            // Try to find user case-insensitively
+            const currentUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+            
             if (currentUser) {
+              console.log('Login: Found user in list:', currentUser);
               userData = {
                 id: currentUser.id,
-                name: currentUser.name || userData.name,
+                name: currentUser.name || currentUser.full_name || currentUser.username || userData.name,
                 email: currentUser.email,
+                role: currentUser.role || userData.role,
               };
+            } else {
+              console.error('Login: User not found in users list for email:', email);
             }
+          } else {
+            console.error('Login: Failed to fetch users list', usersResponse.status);
           }
         } catch (fetchError) {
           console.error("Failed to fetch user details:", fetchError);
         }
       }
       
+      if (!userData.id) {
+         console.error("CRITICAL: Login successful but User ID could not be determined.");
+         // Potentially show an error to user or proceed with limited functionality?
+         // For now, let's proceed but warn.
+      }
+
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       
@@ -75,6 +100,9 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        return { success: false, error: 'Unable to connect to the server. Please check your internet connection or the server might be down.' };
+      }
       return { success: false, error: 'Network error. Please check your connection and try again.' };
     }
   };
