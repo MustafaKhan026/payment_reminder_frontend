@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import AddUserModal from '@/components/admin/AddUserModal';
 import { adminAPI } from '@/lib/api/admin';
-import { Trash2, Search, UserCheck, UserX, Mail } from 'lucide-react';
+import { Trash2, Search, UserCheck, UserX, Mail, Plus } from 'lucide-react';
 
 export default function UsersManagementPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -27,6 +29,29 @@ export default function UsersManagementPage() {
     }
   };
 
+  const handleAddUser = async (userData) => {
+    const response = await adminAPI.createUser(userData);
+    if (response.ok) {
+        // Refresh users list
+        fetchUsers();
+    } else {
+        const err = await response.json();
+        alert(err.message || 'Failed to add user');
+        throw new Error(err.message);
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+        const response = await adminAPI.deleteUser(userId);
+        if (response.ok) {
+            setUsers(prev => prev.filter(u => u.id !== userId));
+        } else {
+            alert('Failed to delete user');
+        }
+    }
+  };
+
   const filteredUsers = users.filter(user => 
     user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,21 +59,35 @@ export default function UsersManagementPage() {
 
   return (
     <div className="space-y-6">
+      <AddUserModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        onAddUser={handleAddUser}
+      />
+
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">User Management</h1>
            <p className="text-gray-500 dark:text-gray-400">Manage system access and user roles</p>
         </div>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search users..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
-          />
+        <div className="flex flex-col md:flex-row gap-3">
+            <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input 
+                type="text" 
+                placeholder="Search users..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
+            />
+            </div>
+            <button 
+                onClick={() => setIsAddModalOpen(true)}
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+            >
+                <Plus size={20} /> Add User
+            </button>
         </div>
       </div>
 
@@ -112,7 +151,11 @@ export default function UsersManagementPage() {
                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'Dec 12, 2024'}
                     </td>
                     <td className="p-4 text-right">
-                      <button className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-lg transition-colors" title="Delete User">
+                      <button 
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-lg transition-colors" 
+                        title="Delete User"
+                      >
                         <Trash2 size={18} />
                       </button>
                     </td>
