@@ -1,0 +1,97 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+import { UserCheck } from 'lucide-react';
+
+export default function UserLoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const { login } = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    // Call login with expectedRole = 'user'
+    const result = await login(email, password, 'user');
+    
+    if (!result.success) {
+      setError(result.error);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full max-w-md mx-auto">
+      <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome Back</h2>
+          <p className="text-gray-500 dark:text-gray-400">Manage your payments seamlessly</p>
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+        
+        {error && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2">
+                <UserCheck size={16} />
+                {error}
+            </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="you@example.com"
+                    required
+                />
+            </div>
+            
+            <div>
+                <div className="flex justify-between items-center mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                    <a href="#" className="text-xs text-blue-500 hover:text-blue-600">Forgot?</a>
+                </div>
+                <input 
+                    type="password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="••••••••"
+                    required
+                />
+            </div>
+
+            <button 
+                type="submit" 
+                disabled={loading}
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+                {loading ? 'Signing In...' : 'Sign In'}
+            </button>
+        </form>
+
+        <div className="mt-6 text-center text-sm">
+            <span className="text-gray-500">New around here? </span>
+            <Link href="/user/signup" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
+                Create Account
+            </Link>
+            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                <Link href="/admin/login" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
+                    Admin Access
+                </Link>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+}

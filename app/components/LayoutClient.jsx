@@ -9,10 +9,13 @@ export default function LayoutClient({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
-  // Hide sidebar and navbar on login and signup pages
+  // Hide global layout for Admin and User routes (they handle their own layouts)
+  const isDedicatedRoute = pathname.startsWith('/admin') || pathname.startsWith('/user');
+  
+  // Also hide for auth pages (legacy support)
   const isAuthPage = pathname === '/login' || pathname === '/signup';
 
-  if (isAuthPage) {
+  if (isDedicatedRoute || isAuthPage) {
     return <>{children}</>;
   }
 

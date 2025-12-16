@@ -109,7 +109,7 @@ export default function Sidebar({ isOpen, onClose }) {
           {/* Sidebar Header */}
           <div className="flex px-6 py-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex gap-3">
-        <img src="/Payremind logo.svg" alt="Payremind Logo" />
+                  <img src="/Payremind logo.svg" alt="Payremind Logo" className='logo-main' />
             </div>
             {/* Close button for mobile */}
             <button

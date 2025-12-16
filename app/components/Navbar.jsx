@@ -42,9 +42,9 @@ export default function Navbar({ onMenuClick }) {
           </button>
 
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            {/* Logo content preserved */}
-          </div>
+          {/* <div className="flex items-center gap-3">
+            <img src="/Payremind logo.svg" alt="PayRemind" className="h-8" />
+          </div> */}
         </div>
 
         {/* Right: Icons and Profile */}
