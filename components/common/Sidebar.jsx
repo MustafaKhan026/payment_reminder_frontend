@@ -25,7 +25,11 @@ export default function Sidebar({ links, title = 'PayRemind', userName = 'User',
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Brand */}
-        <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-700" style={{
+            height: '71px',
+            paddingTop: '15px',
+            paddingBottom: '15px',
+        }}>
            <Link href="/" className="flex items-center gap-2">
               <img src="/Payremind logo.svg" alt="PayRemind" className="h-10 logo-main" />
            </Link>

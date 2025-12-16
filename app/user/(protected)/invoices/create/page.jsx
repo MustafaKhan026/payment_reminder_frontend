@@ -41,8 +41,14 @@ export default function CreateInvoicePage() {
 
     try {
       const payload = {
-          ...formData,
+          invoice_number: formData.invoiceNumber,
+          customer_name: formData.customerName,
+          customer_email: formData.customerEmail,
           amount: parseFloat(formData.amount),
+          due_date: formData.dueDate,
+          issue_date: new Date().toISOString().split('T')[0], // Default to today
+          description: formData.description,
+          status: 'pending',
           user_id: user.id
       };
 
@@ -90,6 +96,23 @@ export default function CreateInvoicePage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
             
+            {/* Invoice Header Details */}
+            <div className="border-b border-gray-100 dark:border-gray-700 pb-6">
+                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Invoice Number</label>
+                 <div className="relative">
+                    <FileText className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input 
+                        type="text"
+                        name="invoiceNumber"
+                        required
+                        value={formData.invoiceNumber}
+                        onChange={handleChange}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-mono"
+                        placeholder="INV-001"
+                    />
+                 </div>
+            </div>
+
             {/* Customer Details */}
             <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-b border-gray-100 dark:border-gray-700 pb-2">Customer Details</h3>
@@ -133,7 +156,7 @@ export default function CreateInvoicePage() {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount (₹)</label>
                         <div className="relative">
-                            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">₹</span>
                             <input 
                                 type="number"
                                 name="amount"
@@ -141,7 +164,7 @@ export default function CreateInvoicePage() {
                                 min="1"
                                 value={formData.amount}
                                 onChange={handleChange}
-                                className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full pl-8 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                                 placeholder="0.00"
                             />
                         </div>

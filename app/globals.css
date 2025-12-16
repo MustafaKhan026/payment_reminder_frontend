@@ -34,3 +34,7 @@ body {
 .no-transition * {
   transition: none !important;
 }
+
+img.h-10.logo-main {
+    height: 103px;
+}
