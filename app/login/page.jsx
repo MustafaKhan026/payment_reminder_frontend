@@ -62,8 +62,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#1A222C] flex flex-col">
       {/* Logo in top left */}
-      <div className="absolute top-8 left-8">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Logo</h1>
+      <div className="absolute top-8 left-5">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+        <img src="/Payremind logo.svg" alt="Payremind Logo" />
+
+        </h1>
       </div>
 
       {/* Main Content */}

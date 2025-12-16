@@ -67,7 +67,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-[#1A222C] flex flex-col">
       {/* Logo in top left */}
       <div className="absolute top-8 left-8">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Logo</h1>
+        <img src="/Payremind logo.svg" alt="Payremind Logo" />
       </div>
 
       {/* Main Content */}
