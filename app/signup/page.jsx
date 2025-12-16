@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function SignupPage() {
   const [name, setName] = useState('');

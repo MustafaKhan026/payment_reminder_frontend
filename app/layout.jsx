@@ -1,6 +1,6 @@
 import LayoutClient from './components/LayoutClient';
 import { ThemeProvider } from './components/theme-provider';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from '../context/AuthContext';
 import './globals.css';
 
 export const metadata = {
@@ -21,4 +21,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-

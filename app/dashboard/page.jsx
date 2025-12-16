@@ -15,8 +15,8 @@ import { getAllInvoicesAPI } from '../api/invoices';
 import { getUsersAPI } from '../api/users';
 import Preloader from '../components/Preloader';
 
-import SmartInsights from '../components/SmartInsights';
-import DashboardCharts from '../components/DashboardCharts';
+import SmartInsights from '../../components/common/SmartInsights';
+import DashboardCharts from '../../components/charts/DashboardCharts';
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
