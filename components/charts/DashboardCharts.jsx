@@ -73,7 +73,7 @@ export default function DashboardCharts() {
               />
               <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
               <Bar dataKey="received" name="Received" fill="#4F46E5" radius={[4, 4, 0, 0]} barSize={20} />
-              <Bar dataKey="pending" name="Pending" fill="#E5E7EB" radius={[4, 4, 0, 0]} barSize={20} />
+              <Bar dataKey="pending" name="Pending" fill="#F59E0B" radius={[4, 4, 0, 0]} barSize={20} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -111,27 +111,7 @@ export default function DashboardCharts() {
       </div>
 
       {/* 3. Overdue by Days (Bar Chart - Styled differently) */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 xl:col-span-3">
-         <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-6">Overdue Aging Report</h3>
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {overdueByDaysData.map((bucket, index) => (
-              <div key={index} className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 flex flex-col items-start hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors border border-transparent hover:border-red-100 dark:hover:border-red-900/30">
-                 <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">{bucket.name}</span>
-                 <div className="flex items-end gap-2 w-full">
-                    <span className="text-xl font-bold text-gray-900 dark:text-white">₹{bucket.amount.toLocaleString()}</span>
-                    <span className="text-xs text-red-500 font-medium mb-1">({bucket.count} inv)</span>
-                 </div>
-                 {/* Mini Bar */}
-                 <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full mt-3 overflow-hidden">
-                    <div 
-                      className="h-full bg-red-500 rounded-full" 
-                      style={{ width: `${(bucket.amount / 50000) * 100}%` }} // Simplified scale
-                    ></div>
-                 </div>
-              </div>
-            ))}
-         </div>
-      </div>
+
     </div>
   );
 }

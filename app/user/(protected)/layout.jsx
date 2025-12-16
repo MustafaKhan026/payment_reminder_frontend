@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/common/Sidebar';
 import Navbar from '@/app/components/Navbar';
 import { LayoutDashboard, FileText, CreditCard, User } from 'lucide-react';
 
 export default function UserLayout({ children }) {
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const userLinks = [
@@ -20,7 +22,8 @@ export default function UserLayout({ children }) {
       <Sidebar 
         links={userLinks} 
         title="My Dashboard" 
-        userRole="User" 
+        userName={user?.name || 'Customer'}
+        userRole={user?.role || 'User'} 
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
