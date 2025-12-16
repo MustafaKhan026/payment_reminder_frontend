@@ -15,6 +15,9 @@ import { getAllInvoicesAPI } from '../api/invoices';
 import { getUsersAPI } from '../api/users';
 import Preloader from '../components/Preloader';
 
+import SmartInsights from '../components/SmartInsights';
+import DashboardCharts from '../components/DashboardCharts';
+
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -212,6 +215,12 @@ export default function DashboardPage() {
           }
         />
       </div>
+
+      {/* Smart Insights */}
+      <SmartInsights />
+
+      {/* Visual Analytics */}
+      <DashboardCharts />
 
       {/* Quick Actions & Recent Activities */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
