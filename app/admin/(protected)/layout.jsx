@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/common/Sidebar';
 import Navbar from '@/app/components/Navbar';
 import { LayoutDashboard, Users, FileText, CreditCard, Settings } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const adminLinks = [
@@ -21,7 +23,8 @@ export default function AdminLayout({ children }) {
       <Sidebar 
         links={adminLinks} 
         title="Admin Panel" 
-        userRole="Administrator" 
+        userName={user?.name || 'Administrator'}
+        userRole={user?.role || 'Admin'} 
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />

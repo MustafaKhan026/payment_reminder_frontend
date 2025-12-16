@@ -1,7 +1,7 @@
 'use client';
 
 import { ModeToggle } from './ModeToggle';
-import { useAuth } from './AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Navbar({ onMenuClick }) {
   const { user } = useAuth();

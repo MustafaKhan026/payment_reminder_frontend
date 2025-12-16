@@ -22,7 +22,7 @@ export default function SmartInsights() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       {/* 1. Expected Collection This Week */}
       <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
         <div className="relative z-10">
@@ -76,7 +76,7 @@ export default function SmartInsights() {
       </div>
 
       {/* 3. Predicted Late Payments */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+      {/* <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
              <div className="p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
@@ -101,7 +101,7 @@ export default function SmartInsights() {
         <button className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2">
           View Predictions <ArrowRight size={16} />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
