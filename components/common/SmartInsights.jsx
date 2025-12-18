@@ -3,23 +3,9 @@
 import React from 'react';
 import { TrendingUp, Users, AlertTriangle, ArrowRight } from 'lucide-react';
 
-export default function SmartInsights() {
-  // Dummy Data for UI
-  const expectedCollection = '₹ 12,45,000';
-  const collectionTrend = '+15% vs last week';
-  
-  const topOverdueCustomers = [
-    { name: 'Acme Corp', amount: '₹ 2,50,000', days: 45 },
-    { name: 'Global Tech', amount: '₹ 1,20,000', days: 32 },
-    { name: 'Nebula Inc', amount: '₹ 85,000', days: 15 },
-    { name: 'Stark Ind', amount: '₹ 50,000', days: 10 },
-    { name: 'Wayne Ent', amount: '₹ 45,000', days: 8 },
-  ];
-
-  const predictedLateParams = {
-    count: 12,
-    totalRisk: '₹ 3,40,000',
-  };
+export default function SmartInsights({ data }) {
+  const expectedCollection = data?.expected_collection || { amount: 0, change_percent: 0 };
+  const topOverdueCustomers = data?.top_overdue || [];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -33,13 +19,15 @@ export default function SmartInsights() {
             <h3 className="font-semibold text-lg">Expected Collection</h3>
           </div>
           <div className="mb-2">
-            <span className="text-3xl font-bold">{expectedCollection}</span>
+            <span className="text-3xl font-bold">₹ {expectedCollection.amount?.toLocaleString() || '0'}</span>
           </div>
           <p className="text-indigo-100 text-sm flex items-center gap-1">
             <span className="bg-white/20 px-2 py-0.5 rounded text-xs font-medium">
               This Week
             </span>
-            <span className="opacity-80 ml-2">{collectionTrend}</span>
+            <span className="opacity-80 ml-2">
+              {expectedCollection.change_percent > 0 ? '+' : ''}{expectedCollection.change_percent}% vs last week
+            </span>
           </p>
         </div>
         {/* Decorative Circle */}
@@ -58,20 +46,26 @@ export default function SmartInsights() {
           <span className="text-xs text-blue-500 cursor-pointer hover:underline">View All</span>
         </div>
         <div className="space-y-3">
-          {topOverdueCustomers.slice(0, 3).map((customer, index) => (
+          {topOverdueCustomers.length > 0 ? (
+            topOverdueCustomers.slice(0, 3).map((customer, index) => (
             <div key={index} className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium text-xs">
-                  {customer.name.charAt(0)}
+                  {customer.name?.charAt(0) || '?'}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-800 dark:text-gray-200">{customer.name}</p>
-                  <p className="text-xs text-red-500">{customer.days} days overdue</p>
+                  <p className="font-medium text-gray-800 dark:text-gray-200">{customer.name || 'Unknown'}</p>
+                  <p className="text-xs text-red-500">{customer.days_overdue || 0} days overdue</p>
                 </div>
               </div>
-              <span className="font-semibold text-gray-700 dark:text-gray-300">{customer.amount}</span>
+              <span className="font-semibold text-gray-700 dark:text-gray-300">₹ {customer.amount?.toLocaleString()}</span>
             </div>
-          ))}
+          ))
+          ) : (
+            <div className="text-center text-gray-500 py-4 text-sm">
+              No overdue payments found.
+            </div>
+          )}
         </div>
       </div>
 
