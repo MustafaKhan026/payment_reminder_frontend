@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { userAPI } from '@/lib/api/user';
+import { getUserDashboardStats } from '@/app/api/users';
 import { FileText, Clock, CheckCircle, Calendar, Plus } from 'lucide-react';
 import DashboardCharts from '@/components/charts/DashboardCharts';
 
@@ -29,6 +29,7 @@ export default function UserDashboardPage() {
     paidAmount: 0,
     nextDue: 'N/A'
   });
+  const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,31 +38,22 @@ export default function UserDashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-        const response = await userAPI.getInvoices(user.id);
+        const response = await getUserDashboardStats(user.id);
         if (response.ok) {
             const data = await response.json();
-            const invoices = Array.isArray(data) ? data : data.invoices || [];
             
-            // Calculate Stats
-            const total = invoices.length;
-            const pending = invoices
-                .filter(inv => inv.status === 'pending' || inv.status === 'overdue')
-                .reduce((sum, inv) => sum + (parseFloat(inv.amount) || 0), 0);
-            
-            const paid = invoices
-                .filter(inv => inv.status === 'paid')
-                .reduce((sum, inv) => sum + (parseFloat(inv.amount) || 0), 0);
-            
-            // Find next due date
-            const upcoming = invoices
-                .filter(inv => inv.status !== 'paid' && new Date(inv.dueDate) > new Date())
-                .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))[0];
-            
+            // Map API Stats
             setStats({
-                totalInvoices: total,
-                pendingAmount: pending,
-                paidAmount: paid,
-                nextDue: upcoming ? new Date(upcoming.dueDate).toLocaleDateString() : 'N/A'
+                totalInvoices: data.summary?.totalInvoices || 0,
+                pendingAmount: data.summary?.pendingAmount || 0,
+                paidAmount: data.summary?.totalPaid || 0,
+                nextDue: data.summary?.nextDueDate ? new Date(data.summary.nextDueDate).toLocaleDateString() : 'N/A'
+            });
+
+            // Store Analytics Data for Charts
+            setAnalyticsData({
+                monthlyTrend: data.paymentTrend || [],
+                paymentStatus: data.paymentStatus || {}
             });
         }
     } catch (error) {
@@ -70,6 +62,11 @@ export default function UserDashboardPage() {
         setLoading(false);
     }
   };
+
+  const chartAnalytics = useMemo(() => {
+     if (analyticsData) return analyticsData;
+     return null;
+  }, [analyticsData]);
 
   return (
     <div className="space-y-8">
@@ -119,7 +116,7 @@ export default function UserDashboardPage() {
       {/* Graphs Section */}
       <div>
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Payment Analytics</h2>
-        <DashboardCharts />
+        <DashboardCharts analytics={chartAnalytics} />
       </div>
     </div>
   );

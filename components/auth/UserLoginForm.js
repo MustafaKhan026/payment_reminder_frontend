@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { UserCheck } from 'lucide-react';
+import { UserCheck, Eye, EyeOff } from 'lucide-react';
 
 export default function UserLoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -28,16 +29,9 @@ export default function UserLoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome Back</h2>
-          <p className="text-gray-500 dark:text-gray-400">Manage your payments seamlessly</p>
-      </div>
-
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-        
+    <div className="w-full">
         {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2">
+            <div className="mb-6 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2">
                 <UserCheck size={16} />
                 {error}
             </div>
@@ -61,14 +55,28 @@ export default function UserLoginForm() {
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                     <a href="#" className="text-xs text-blue-500 hover:text-blue-600">Forgot?</a>
                 </div>
-                <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                    placeholder="••••••••"
-                    required
-                />
+                <div className="relative">
+                    <input 
+                        type={showPassword ? "text" : "password"} 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all pr-10"
+                        placeholder="••••••••"
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+                <input type="checkbox" id="remember" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                <label htmlFor="remember" className="text-sm text-gray-500">Remember Me</label>
             </div>
 
             <button 
@@ -80,18 +88,11 @@ export default function UserLoginForm() {
             </button>
         </form>
 
-        <div className="mt-6 text-center text-sm">
-            <span className="text-gray-500">New around here? </span>
-            <Link href="/user/signup" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
-                Create Account
+        <div className="mt-6 text-center text-sm border-t border-gray-100 dark:border-gray-700 pt-6">
+            <Link href="/admin/login" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
+                Admin Access
             </Link>
-            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <Link href="/admin/login" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
-                    Admin Access
-                </Link>
-            </div>
         </div>
-      </div>
     </div>
   );
 }
