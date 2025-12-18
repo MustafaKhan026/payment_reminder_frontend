@@ -1,9 +1,13 @@
 import AdminSignupForm from '@/components/auth/AdminSignupForm';
+import AuthPageLayout from '@/components/auth/AuthPageLayout';
 
 export default function AdminSignupPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#1A222C] flex flex-col items-center justify-center p-4">
+    <AuthPageLayout 
+        title="Admin Registration" 
+        subtitle="Create a new administrative account"
+    >
       <AdminSignupForm />
-    </div>
+    </AuthPageLayout>
   );
 }

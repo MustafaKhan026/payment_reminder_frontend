@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { userAuth } from '@/lib/api/userAuth';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, Eye, EyeOff } from 'lucide-react';
 
 export default function UserSignupForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -38,16 +39,9 @@ export default function UserSignupForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Join PayRemind</h2>
-          <p className="text-gray-500 dark:text-gray-400">Start managing your payments today</p>
-      </div>
-
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-        
+    <div className="w-full">
         {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2">
+            <div className="mb-6 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2">
                 <UserPlus size={16} />
                 {error}
             </div>
@@ -80,14 +74,23 @@ export default function UserSignupForm() {
             
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                    placeholder="••••••••"
-                    required
-                />
+                <div className="relative">
+                    <input 
+                        type={showPassword ? "text" : "password"} 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all pr-10"
+                        placeholder="••••••••"
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                </div>
             </div>
 
             <button 
@@ -98,14 +101,6 @@ export default function UserSignupForm() {
                 {loading ? 'Create Account' : 'Sign Up'}
             </button>
         </form>
-
-        <div className="mt-6 text-center text-sm">
-            <span className="text-gray-500">Already have an account? </span>
-            <Link href="/user/login" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
-                Login
-            </Link>
-        </div>
-      </div>
     </div>
   );
 }

@@ -23,3 +23,22 @@ export const getUsersAPI = async (token = null) => {
   });
   return response;
 };
+
+/**
+ * Get User Dashboard Stats API call
+ * @param {number} userId - The ID of the user
+ * @returns {Promise<Response>}
+ */
+export const getUserDashboardStats = async (userId) => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/dashboard`, {
+      method: 'GET',
+      headers: headers,
+    });
+    return response;
+};

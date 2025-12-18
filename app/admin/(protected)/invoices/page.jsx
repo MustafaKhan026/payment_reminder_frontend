@@ -30,8 +30,8 @@ export default function AdminInvoicesPage() {
   };
 
   const filteredInvoices = invoices.filter(inv => {
-    const searchMatch = inv.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                        inv.invoiceNumber?.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchMatch = inv.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                        inv.invoice_number?.toLowerCase().includes(searchTerm.toLowerCase());
     const statusMatch = statusFilter === 'all' || inv.status?.toLowerCase() === statusFilter;
     return searchMatch && statusMatch;
   });
@@ -108,10 +108,10 @@ export default function AdminInvoicesPage() {
                 filteredInvoices.map((inv) => (
                   <tr key={inv.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <td className="p-4 font-medium text-gray-900 dark:text-white">
-                      {inv.invoiceNumber || `#INV-${inv.id}`}
+                      {inv.invoice_number || `#INV-${inv.id}`}
                     </td>
                     <td className="p-4 text-gray-700 dark:text-gray-300">
-                      {inv.customerName || 'Unknown User'}
+                      {inv.customer_name || inv.user?.email || 'Unknown User'}
                     </td>
                     <td className="p-4 font-semibold text-gray-900 dark:text-white">
                       ₹{inv.amount?.toLocaleString() || '0'}
@@ -122,7 +122,7 @@ export default function AdminInvoicesPage() {
                       </span>
                     </td>
                     <td className="p-4 text-sm text-gray-500 dark:text-gray-400">
-                       {inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : 'N/A'}
+                       {inv.due_date ? new Date(inv.due_date).toLocaleDateString() : 'N/A'}
                     </td>
                     <td className="p-4 text-right">
                       <button className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors">

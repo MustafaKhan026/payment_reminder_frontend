@@ -72,9 +72,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    authAPI.logout();
+    // Determine redirect path based on user role
+    const redirectPath = user?.role === 'admin' ? '/admin/login' : '/user/login';
+    
+    authAPI.logout(); // Optional: Call backend to invalidate token if your API supports it
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
-    router.push('/login');
+    router.push(redirectPath);
   };
 
   return (
