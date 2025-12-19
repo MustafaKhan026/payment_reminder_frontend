@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
-import { DollarSign, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
+import { DollarSign, Clock, CheckCircle, AlertTriangle, Users } from 'lucide-react';
+import Link from 'next/link';
 import SmartInsights from '@/components/common/SmartInsights';
 import DashboardCharts from '@/components/charts/DashboardCharts';
 import { getAdminDashboardStats } from '@/app/api/admin';
@@ -113,6 +114,18 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Smart Insights (Middle Row) */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+        <div className="flex flex-wrap gap-4">
+            <Link 
+                href="/admin/users" 
+                className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+            >
+                <Users size={18} /> Manage Users
+            </Link>
+        </div>
+      </div>
+
       <SmartInsights data={insightsData} />
       
       {/* Charts (Bottom Row) */}

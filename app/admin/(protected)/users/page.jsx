@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import AddUserModal from '@/components/admin/AddUserModal';
 import { adminAPI } from '@/lib/api/admin';
-import { Trash2, Search, UserCheck, UserX, Mail, Plus } from 'lucide-react';
+import { Trash2, Search, UserCheck, UserX, Mail, Plus, Edit } from 'lucide-react';
+
+import Link from 'next/link';
 
 export default function UsersManagementPage() {
   const [users, setUsers] = useState([]);
@@ -150,7 +152,18 @@ export default function UsersManagementPage() {
                        {/* Mock Date if missing */}
                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'Dec 12, 2024'}
                     </td>
-                    <td className="p-4 text-right">
+                    <td className="p-4 text-right" style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}>
+                      <Link 
+                        href={`/admin/users/${user.id}`}
+                        className="text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 p-2 rounded-lg transition-colors mr-1" 
+                        title="Edit User"
+                      >
+                        <Edit size={18} />
+                      </Link>
                       <button 
                         onClick={() => handleDeleteUser(user.id)}
                         className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-lg transition-colors" 

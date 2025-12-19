@@ -14,6 +14,7 @@ export default function CreateInvoicePage() {
   const [success, setSuccess] = useState('');
 
   const [formData, setFormData] = useState({
+    invoiceNumber: '',
     amount: '',
     dueDate: '',
     customerName: '',
@@ -43,12 +44,12 @@ export default function CreateInvoicePage() {
       const payload = {
           invoice_number: formData.invoiceNumber,
           customer_name: formData.customerName,
-          customer_email: formData.customerEmail,
+          // customer_email: formData.customerEmail, // Removed to match schema
           amount: parseFloat(formData.amount),
           due_date: formData.dueDate,
-          issue_date: new Date().toISOString().split('T')[0], // Default to today
-          description: formData.description,
-          status: 'pending',
+          issue_date: new Date().toISOString().split('T')[0],
+          // description: formData.description, // Removed to match schema
+          status: 'Pending', // Title case to match schema
           user_id: user.id
       };
 

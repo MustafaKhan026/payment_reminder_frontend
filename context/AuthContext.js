@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password, expectedRole) => {
     try {
       // Use the appropriate auth method if needed, but for now generic login is fine
-      const response = await authAPI.login(email, password);
+      // Pass expectedRole if present (e.g. 'admin') so backend knows context
+      const response = await authAPI.login(email, password, expectedRole);
       
       if (!response.ok) {
         if (response.status === 401) return { success: false, error: 'Invalid credentials' };
@@ -34,11 +35,14 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      console.log('Login Response Data:', data); // Debugging
+
       const userObj = data.user || data; // Fallback if user is at root
       const token = data.token || data.access_token || userObj.token;
       
       // Determine Role
-      const role = userObj.role || data.role || (email.includes('admin') ? 'admin' : 'user');
+      // Backend returns 'user_type' sometimes instead of 'role'
+      const role = userObj.role || userObj.user_type || data.role || (email.includes('admin') ? 'admin' : 'user');
 
       // Role Mismatch Check
       if (expectedRole && role !== expectedRole) {
@@ -46,11 +50,13 @@ export const AuthProvider = ({ children }) => {
       }
 
       const userData = {
-        id: userObj.id || userObj.user_id,
+        id: userObj.id || userObj.user_id || userObj._id, // Added _id fallback
         name: userObj.name || email.split('@')[0],
         email: email,
         role: role, 
       };
+      
+      console.log('Processed User Data:', userData); // Debugging
 
       // Save session
       if (token) localStorage.setItem('token', token);
@@ -71,6 +77,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (userData) => {
+    setUser(prev => {
+        const newUser = { ...prev, ...userData };
+        localStorage.setItem('user', JSON.stringify(newUser));
+        return newUser;
+    });
+  };
+
   const logout = () => {
     // Determine redirect path based on user role
     const redirectPath = user?.role === 'admin' ? '/admin/login' : '/user/login';
@@ -83,7 +97,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

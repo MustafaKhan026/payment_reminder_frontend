@@ -64,7 +64,7 @@ export default function DashboardCharts({ analytics }) {
         <div className="h-72 w-full">
           {trendData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <BarChart data={trendData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                 <XAxis 
                     dataKey="name" 

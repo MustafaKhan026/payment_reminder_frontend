@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/common/Sidebar';
 import Navbar from '@/app/components/Navbar';
-import { LayoutDashboard, FileText, CreditCard, User } from 'lucide-react';
+import { LayoutDashboard, FileText, CreditCard, User, Bell } from 'lucide-react';
 
 export default function UserLayout({ children }) {
   const { user } = useAuth();
@@ -14,6 +14,7 @@ export default function UserLayout({ children }) {
     { name: 'Dashboard', href: '/user/dashboard', icon: LayoutDashboard },
     { name: 'My Invoices', href: '/user/invoices', icon: FileText },
     { name: 'My Payments', href: '/user/payments', icon: CreditCard },
+    { name: 'Reminders', href: '/user/reminders', icon: Bell },
     { name: 'Profile', href: '/user/profile', icon: User },
   ];
 

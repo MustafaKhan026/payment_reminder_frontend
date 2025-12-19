@@ -65,9 +65,9 @@ export default function UserInvoicesPage() {
                     <FileText size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">{inv.invoiceNumber || 'Invoice #'+inv.id}</h3>
+                     <h3 className="font-bold text-gray-900 dark:text-white">{inv.invoice_number || 'Invoice #'+inv.id}</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                       <Calendar size={14} /> Due: {inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : 'N/A'}
+                       <Calendar size={14} /> Due: {inv.due_date ? new Date(inv.due_date).toLocaleDateString() : 'N/A'}
                     </p>
                   </div>
                </div>
