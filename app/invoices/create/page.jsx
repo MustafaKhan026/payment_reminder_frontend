@@ -9,7 +9,7 @@ export default function CreateInvoicePage() {
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null);    
 
   const [formData, setFormData] = useState({
     invoice_number: '',
@@ -29,10 +29,12 @@ export default function CreateInvoicePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user?.id) {
+    //using stored user to check auth
+    const storedUser = JSON.parse(localStorage.getItem('user'));  
+    if (!storedUser?.id) {
       setError('User not authenticated');
-      return;
-    }
+      return;    
+    } 
 
     setLoading(true);
     setError(null);
@@ -43,7 +45,7 @@ export default function CreateInvoicePage() {
     };
 
     try {
-      const response = await createInvoiceAPI(user.id, invoicePayload);
+      const response = await createInvoiceAPI(storedUser.id, invoicePayload);
       
       if (!response.ok) {
         const data = await response.json();
@@ -58,7 +60,7 @@ export default function CreateInvoicePage() {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
