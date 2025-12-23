@@ -2,12 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { reminderAPI } from '@/lib/api/reminders';
-import { Bell, Calendar, User, Search, FileText, Mail } from 'lucide-react';
+import { Bell, Calendar, User, Search, FileText, Mail, ArrowRight, Clock, CheckCircle, AlertCircle, Eye } from 'lucide-react';
+import Link from 'next/link';
+import ViewReminderModal from '@/components/admin/ViewReminderModal';
 
 export default function AdminRemindersPage() {
   const [reminders, setReminders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedReminder, setSelectedReminder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchReminders = async () => {
     try {
@@ -27,79 +31,166 @@ export default function AdminRemindersPage() {
     fetchReminders();
   }, []);
 
+  const handleViewReminder = (reminder) => {
+    setSelectedReminder(reminder);
+    setIsModalOpen(true);
+  };
+
   const filteredReminders = reminders.filter(rem => 
     rem.reminder_type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     rem.status?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     String(rem.invoice_id).includes(searchTerm) ||
-    String(rem.user_id).includes(searchTerm)
+    String(rem.user_id).includes(searchTerm) ||
+    rem.invoice_number?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const statusColors = {
-    'pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    'sent': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-    'failed': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+  const getStatusBadge = (status) => {
+    const s = status?.toLowerCase();
+    switch (s) {
+      case 'sent':
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+            <CheckCircle size={12} /> Sent
+          </span>
+        );
+      case 'pending':
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+            <Clock size={12} /> Pending
+          </span>
+        );
+      case 'failed':
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+            <AlertCircle size={12} /> Failed
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400">
+            {status}
+          </span>
+        );
+    }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <ViewReminderModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        reminder={selectedReminder}
+      />
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">All Reminders</h1>
            <p className="text-gray-500 dark:text-gray-400">View and manage system payment reminders</p>
         </div>
+        <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input 
+                type="text"
+                placeholder="Search by ID, type or status..."
+                className="w-full md:w-80 pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+        </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-          <input 
-              type="text"
-              placeholder="Search by ID, type or status..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-          />
-      </div>
-
-      {loading ? (
-         <div className="flex justify-center py-12">
-             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-         </div>
-      ) : filteredReminders.length === 0 ? (
-         <div className="bg-white dark:bg-gray-800 rounded-xl p-12 text-center border border-gray-200 dark:border-gray-700">
-             <div className="mx-auto w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
-                 <Bell className="text-gray-400" size={32} />
-             </div>
-             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No reminders found</h3>
-             <p className="text-gray-500 dark:text-gray-400">There are no reminders in the system matching your search.</p>
-         </div>
-      ) : (
-         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-             {filteredReminders.map((reminder) => (
-                 <div key={reminder.id} className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
-                     <div className="flex justify-between items-start mb-4">
-                        <div className={`px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${statusColors[reminder.status?.toLowerCase()] || 'bg-gray-100 text-gray-800'}`}>
-                            {reminder.status}
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-gray-400 bg-gray-50 dark:bg-gray-700 px-2 py-1 rounded">
-                            <User size={12} />
-                            User ID: {reminder.user_id}
-                        </div>
-                     </div>
-                     
-                     <div className="flex items-center gap-2 mb-2">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-400 text-sm">
+                <th className="p-4 font-medium">Invoice</th>
+                <th className="p-4 font-medium">User ID</th>
+                <th className="p-4 font-medium">Type</th>
+                <th className="p-4 font-medium">Status</th>
+                <th className="p-4 font-medium">Sent Date</th>
+                <th className="p-4 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+              {loading ? (
+                // Skeleton Loader
+                [...Array(5)].map((_, i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="p-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div></td>
+                    <td className="p-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div></td>
+                    <td className="p-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div></td>
+                    <td className="p-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div></td>
+                    <td className="p-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div></td>
+                    <td className="p-4"></td>
+                  </tr>
+                ))
+              ) : filteredReminders.length > 0 ? (
+                filteredReminders.map((reminder) => (
+                  <tr key={reminder.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
                         <FileText size={16} className="text-indigo-500" />
-                        <span className="font-medium text-gray-900 dark:text-white">Invoice #{reminder.invoice_id}</span>
-                     </div>
-
-                     <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <Mail size={16} />
-                        <span className="capitalize">{reminder.reminder_type} Reminder</span>
-                     </div>
-                 </div>
-             ))}
-         </div>
-      )}
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          #{reminder.invoice_id} {reminder.invoice_number && `(${reminder.invoice_number})`}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="p-4 text-sm text-gray-600 dark:text-gray-300">
+                       <span className="flex items-center gap-1">
+                          <User size={14} className="text-gray-400" />
+                          {reminder.user_id}
+                       </span>
+                    </td>
+                    <td className="p-4">
+                       <span className="capitalize text-sm text-gray-600 dark:text-gray-300 flex items-center gap-1">
+                          <Mail size={14} className="text-gray-400" />
+                          {reminder.reminder_type}
+                       </span>
+                    </td>
+                    <td className="p-4">
+                      {getStatusBadge(reminder.status)}
+                    </td>
+                    <td className="p-4 text-sm text-gray-500 dark:text-gray-400">
+                       <div className="flex items-center gap-1">
+                          <Calendar size={14} />
+                          {reminder.sent_at ? new Date(reminder.sent_at).toLocaleDateString() : (reminder.created_at ? new Date(reminder.created_at).toLocaleDateString() : 'N/A')}
+                       </div>
+                    </td>
+                    <td className="p-4 text-right">
+                       <div className="flex justify-end items-center gap-2">
+                          <button 
+                            onClick={() => handleViewReminder(reminder)}
+                            className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
+                            title="View Details"
+                          >
+                            <Eye size={18} />
+                          </button>
+                          <Link 
+                            href={`/admin/invoices/${reminder.invoice_id}`}
+                            className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium flex items-center gap-1 ml-2"
+                          >
+                            Invoice <ArrowRight size={14} />
+                          </Link>
+                       </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="p-12 text-center text-gray-500 dark:text-gray-400">
+                    <div className="flex flex-col items-center">
+                      <Bell size={48} className="mb-2 opacity-20" />
+                      <p className="text-lg font-medium">No reminders found</p>
+                      <p className="text-sm">There are no reminders matching your search criteria.</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

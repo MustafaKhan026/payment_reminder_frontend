@@ -8,9 +8,9 @@ export default function SmartInsights({ data }) {
   const topOverdueCustomers = data?.top_overdue || [];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-2 gap-6 mb-8">
       {/* 1. Expected Collection This Week */}
-      <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+      <div className="bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-4">
             <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">

@@ -50,10 +50,10 @@ export default function DashboardCharts({ analytics }) {
   }, [statusData]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
       
       {/* 1. Monthly Payment Trend (Bar Chart) */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 xl:col-span-2">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-bold text-gray-800 dark:text-white">Monthly Payment Trend</h3>
           <select className="text-sm border-none bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-1 cursor-pointer">
