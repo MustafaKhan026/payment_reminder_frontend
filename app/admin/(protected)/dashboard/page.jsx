@@ -206,7 +206,14 @@ export default function AdminDashboardPage() {
                   ) : recentReminders.length > 0 ? (
                     recentReminders.map((reminder) => (
                       <tr key={reminder.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">#{reminder.invoice_id}</td>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                          <Link 
+                            href={`/admin/invoices/${reminder.invoice_id}`}
+                            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                          >
+                            #{reminder.invoice_id}
+                          </Link>
+                        </td>
                         <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
                           <span className="flex items-center gap-1.5 capitalize">
                             <Mail size={14} className="text-gray-400" />

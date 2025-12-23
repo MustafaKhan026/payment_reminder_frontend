@@ -131,9 +131,12 @@ export default function AdminRemindersPage() {
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <FileText size={16} className="text-indigo-500" />
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <Link 
+                          href={`/admin/invoices/${reminder.invoice_id}`}
+                          className="font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        >
                           #{reminder.invoice_id} {reminder.invoice_number && `(${reminder.invoice_number})`}
-                        </span>
+                        </Link>
                       </div>
                     </td>
                     <td className="p-4 text-sm text-gray-600 dark:text-gray-300">

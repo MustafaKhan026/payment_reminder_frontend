@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { X, Bell, Calendar, User, FileText, Mail, Info, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Bell, Calendar, User, FileText, Mail, Info, Clock, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ViewReminderModal({ isOpen, onClose, reminder }) {
   if (!isOpen || !reminder) return null;
@@ -77,10 +78,18 @@ export default function ViewReminderModal({ isOpen, onClose, reminder }) {
                         <FileText size={16} />
                         <span className="text-xs font-bold uppercase tracking-wider">Invoice Info</span>
                     </div>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">#{reminder.invoice_id}</p>
-                    {reminder.invoice_number && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{reminder.invoice_number}</p>
-                    )}
+                    <Link 
+                        href={`/admin/invoices/${reminder.invoice_id}`}
+                        className="group"
+                    >
+                        <div className="flex items-center gap-1">
+                            <p className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">#{reminder.invoice_id}</p>
+                            <ExternalLink size={14} className="text-gray-400 group-hover:text-indigo-500 opacity-0 group-hover:opacity-100 transition-all" />
+                        </div>
+                        {reminder.invoice_number && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-indigo-400/80 transition-colors">{reminder.invoice_number}</p>
+                        )}
+                    </Link>
                 </div>
 
                 <div className="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700">

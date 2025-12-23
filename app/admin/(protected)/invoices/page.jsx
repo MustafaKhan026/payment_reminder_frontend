@@ -108,7 +108,12 @@ export default function AdminInvoicesPage() {
                 filteredInvoices.map((inv) => (
                   <tr key={inv.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <td className="p-4 font-medium text-gray-900 dark:text-white">
-                      {inv.invoice_number || `#INV-${inv.id}`}
+                      <Link 
+                        href={`/admin/invoices/${inv.id}`}
+                        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      >
+                        {inv.invoice_number || `#INV-${inv.id}`}
+                      </Link>
                     </td>
                     <td className="p-4 text-gray-700 dark:text-gray-300">
                       {inv.customer_name || inv.user?.email || 'Unknown User'}
