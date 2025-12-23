@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { adminAPI } from '@/lib/api/admin';
 import { Search, FileText, Download, MoreVertical, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AdminInvoicesPage() {
   const [invoices, setInvoices] = useState([]);
